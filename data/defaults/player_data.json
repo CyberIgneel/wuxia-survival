@@ -1,0 +1,17 @@
+{   
+    "name":"Peasant",
+    "health":100,
+    "maxHealth":100,
+    "attack":15,
+    "defence":10,
+    "healthRegenAmount":0.005,
+    "attackSpeed":10,
+    "growthRate": 0.0001,
+    "potential":{
+        "maxHealth":100,
+        "attack": 15,
+        "attackSpeed":10,
+        "defence":10,
+        "healthRegenAmount":0.005
+    }
+}

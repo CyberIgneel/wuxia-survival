@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wuxia Survival v0.0.0</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <button id="fightToggleButton">Toggle Fights</button>
+    <div id="fightDiv" class="container hidden">
+        <button id="attack-btn">Attack</button> 
+        <span id = "player-div">
+            <h2 id="player-name">Player 1</h2>
+            <div id="playerHealthBar" class="healthBarBackground fight-bar-sizing">
+                <div id="playerHealthBarInner" class="health progress-bar fight-bar-sizing"></div>
+            </div>
+            <div id="playerAttackProgressBar" class="attackBarBackground fight-bar-sizing">
+                <div id="playerAttackProgressBarInner"  class="attackProgress progress-bar fight-bar-sizing"></div>
+            </div>
+            
+        </span>
+        <span id="enemy-div">
+            <h2 id="enemy-name">Enemy 1</h2>
+            <div id="enemyHealthBar" class="healthBarBackground fight-bar-sizing">
+                <div id="enemyHealthBarInner" class="health progress-bar fight-bar-sizing"></div>
+            </div>
+            <div id="enemyAttackProgressBar" class="attackBarBackground fight-bar-sizing">
+                <div id="enemyAttackProgressBarInner" class="attackProgress progress-bar fight-bar-sizing"></div>
+            </div>    
+        </span>
+    <script src="script/script.js"></script>
+</body>
+</html>

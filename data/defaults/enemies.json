@@ -1,0 +1,9 @@
+{   
+    "wolf":{
+        "health":40,
+        "maxHealth":40,
+        "attack":20,
+        "defence":5,
+        "attackSpeed":20
+    }
+}
