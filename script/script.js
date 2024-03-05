@@ -169,7 +169,8 @@ function startFight(){
   fighting = true;
 }
 
-
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const gitHubUrl = 'https://raw.githubusercontent.com/CyberIgneel/wuxia-survival/test';
 
 function loadJSON(relativePath) {
   return fetch(relativePath)
@@ -184,6 +185,21 @@ function loadJSON(relativePath) {
     });
 }
 
+function loadWebsiteJSON(path){
+  url = gitHubUrl + path;
+  fetch(url)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .catch(error => {
+    console.error('Error fetching the JSON file:', error);
+  });
+}
+
+
 function loadEnemy(){
   enemy = enemies.wolf;
   enemy.health = enemy.maxHealth;
@@ -192,12 +208,15 @@ function loadEnemy(){
 }
 
 
-
-
 (async() => {
-  enemies = await loadJSON("../data/defaults/enemies.json");
-
-  player = await loadJSON("../data/defaults/player_data.json")
+  if (isLocalhost){
+    enemies = await loadJSON("../data/defaults/enemies.json");
+    player = await loadJSON("../data/defaults/player_data.json");
+  }
+  else{
+    enemies = await loadWebsiteJSON("/data/defaults/enemies.json");
+    player = await loadWebsiteJSON("/data/defaults/player_data.json");
+  }
   playerName.innerText = player.name;
   setInterval(gameLoop, 100);
   attackBtn.addEventListener("click", startFight);
