@@ -191,7 +191,7 @@ async function loadWebsiteJSON(path){
   if (!response.ok){
     throw new Error(`Network response was not ok: ${response.statusText}`);
   }
-  return response.json();
+  return await response.json();
 }
 
 
@@ -209,8 +209,8 @@ function loadEnemy(){
     player = await loadJSON("../data/defaults/player_data.json");
   }
   else{
-    enemies = loadWebsiteJSON("/data/defaults/enemies.json");
-    player = loadWebsiteJSON("/data/defaults/player_data.json");
+    enemies = await loadWebsiteJSON("/data/defaults/enemies.json");
+    player = await loadWebsiteJSON("/data/defaults/player_data.json");
   }
   playerName.innerText = player.name;
   setInterval(gameLoop, 100);
