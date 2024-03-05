@@ -185,18 +185,13 @@ function loadJSON(relativePath) {
     });
 }
 
-function loadWebsiteJSON(path){
+async function loadWebsiteJSON(path){
   url = gitHubUrl + path;
-  fetch(url)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
-    return response.json();
-  })
-  .catch(error => {
-    console.error('Error fetching the JSON file:', error);
-  });
+  response = await fetch(url);
+  if (!response.ok){
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+  return response.json();
 }
 
 
@@ -214,8 +209,8 @@ function loadEnemy(){
     player = await loadJSON("../data/defaults/player_data.json");
   }
   else{
-    enemies = await loadWebsiteJSON("/data/defaults/enemies.json");
-    player = await loadWebsiteJSON("/data/defaults/player_data.json");
+    enemies = loadWebsiteJSON("/data/defaults/enemies.json");
+    player = loadWebsiteJSON("/data/defaults/player_data.json");
   }
   playerName.innerText = player.name;
   setInterval(gameLoop, 100);
