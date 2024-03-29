@@ -186,8 +186,8 @@ function loadJSON(relativePath) {
 }
 
 async function loadWebsiteJSON(path){
-  url = gitHubUrl + path;
-  response = await fetch(url);
+  const url = gitHubUrl + path;
+  const response = await fetch(url);
   if (!response.ok){
     throw new Error(`Network response was not ok: ${response.statusText}`);
   }
@@ -205,8 +205,8 @@ function loadEnemy(){
 
 (async() => {
   if (isLocalhost){
-    enemies = await loadJSON("../data/defaults/enemies.json");
-    player = await loadJSON("../data/defaults/player_data.json");
+    enemies = await loadJSON("data/defaults/enemies.json");
+    player = await loadJSON("data/defaults/player_data.json");
   }
   else{
     enemies = await loadWebsiteJSON("/data/defaults/enemies.json");
