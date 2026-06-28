@@ -1,4 +1,4 @@
-function toggleVisilibity(divName){
+function toggleVisibility(divName){
   let section = document.getElementById(divName);
   if(section != null){
     if(section.classList.contains("hidden")){
@@ -11,7 +11,8 @@ function toggleVisilibity(divName){
 }
 
 function toggleFightVisilibity(){
-  toggleVisilibity("fightDiv");
+  toggleVisibility("fightDiv");
+  updateHealth(player, playerHealthBar);
 }
 
 const fightDiv = document.getElementById("fightDiv");
@@ -36,13 +37,15 @@ function updateHealth(entity, healthBar){
 }
 
 function takeDamage(entity, attack, healthBar) {
-  let damageTaken = attack - entity.defence ;
-  entity.health -= damageTaken;
-  if (entity.health < 0){
-    entity.health = 0;
+  let damageTaken = attack - entity.defence;
+  if (damageTaken > 0){
+    entity.health -= damageTaken;
+    if (entity.health < 0){
+      entity.health = 0;
+    }
+    updateHealth(entity, healthBar);
+    return damageTaken;
   }
-  updateHealth(entity, healthBar)
-  return damageTaken;
 }
 
 function calculateStatGrowth(current, potential, growthRate, modifier){
@@ -80,14 +83,19 @@ function stopRegen(){
   regenTicks = 0;
 }
 
+let regenRamp = 0;
 function regen(rate){
+  if(regening){
+    regenRamp += 0.01
+  }
   let healthPercentage = player.health/player.maxHealth
-  let regeneratedAmount = player.healthRegenAmount*rate*healthPercentage;
+  let regeneratedAmount = player.healthRegenAmount*rate*healthPercentage*(1+regenRamp)**2;
   if(player.health < player.maxHealth){
     if(player.health + regeneratedAmount > player.maxHealth){
       regeneratedAmount = player.maxHealth - player.health;
       stopRegen();
     }
+    console.log(player.health);
     player.health += regeneratedAmount;
     updateHealth(player, playerHealthBar);
   }
@@ -110,7 +118,6 @@ let enemyAttackProgress;
 let fighting = false;
 let enemy;
 function fightTick(){
-  console.log(player.potential.defence);
   regen(0.01);
   playerAttackProgress += player.attackSpeed;
   enemyAttackProgress += enemy.attackSpeed;
@@ -151,11 +158,8 @@ function gameLoop(){
   if(fighting){
     fightTick();
   }
-  else if (regening){
+  else if(player.health < player.maxHealth){
     regen(1);
-  }
-  else{
-    growStats(player, 1);
   }
 }
 
@@ -167,6 +171,7 @@ function startFight(){
   playerAttackProgress = 0;
   enemyAttackProgress = 0;
   fighting = true;
+  regenRamp = 0;
 }
 
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -185,9 +190,39 @@ function loadJSON(relativePath) {
     });
 }
 
+const SAVE_KEY = "wuxia_save";
+
+function saveGame() {
+  const saveData = {
+    player: player,
+    timestamp: Date.now()
+  };
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+    console.log("Game saved.");
+  } catch (e) {
+    console.error("Save failed:", e);
+  }
+}
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    console.error("Save corrupted, ignoring:", e);
+    return null;
+  }
+}
+
+function deleteSave() {
+  localStorage.removeItem(SAVE_KEY);
+}
+
 async function loadWebsiteJSON(path){
-  url = gitHubUrl + path;
-  response = await fetch(url);
+  let url = gitHubUrl + path;
+  let response = await fetch(url);
   if (!response.ok){
     throw new Error(`Network response was not ok: ${response.statusText}`);
   }
@@ -212,7 +247,18 @@ function loadEnemy(){
     enemies = await loadWebsiteJSON("/data/defaults/enemies.json");
     player = await loadWebsiteJSON("/data/defaults/player_data.json");
   }
+
+  // Overlay save data on top of defaults if it exists
+  const save = loadSave();
+  if (save) {
+    player = save.player;
+    console.log(`Save loaded from ${new Date(save.timestamp).toLocaleString()}`);
+  }
+
   playerName.innerText = player.name;
+  // Fight tickspeed, every 1/10th of a second with val 100
   setInterval(gameLoop, 100);
+  // Autosave every 30 seconds
+  setInterval(saveGame, 30000);
   attackBtn.addEventListener("click", startFight);
 })()
