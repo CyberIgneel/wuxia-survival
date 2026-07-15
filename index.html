@@ -1,35 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wuxia Survival v0.0.1</title>
-    <link rel="stylesheet" href="style/styles.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wuxia Survival v0.0.3</title>
+  <link rel="stylesheet" href="style/styles.css">
 </head>
 <body>
-    <button id="fightToggleButton">Toggle Fights</button>
-    <div id="fightDiv" class="container hidden">
-        <button id="attack-btn">Attack</button> 
-        <span id = "player-div">
-            <h2 id="player-name">Player 1</h2>
-            <div id="playerHealthBar" class="healthBarBackground fight-bar-sizing">
-                <div id="playerHealthBarInner" class="health progress-bar fight-bar-sizing"></div>
+
+  <div id="game-wrapper">
+    <div id="navBar">
+      <button id="fightToggleButton">Combat view</button>
+      <button id="statPanelToggleButton">Stat Panel</button>
+    </div>
+    
+    <section id="stat-panel">
+      <div id="statDiv">
+        <div id="stat-header">
+          <span id="player-name">—</span>
+          <span id="cultivation-stage">Mortal · Stage 1</span>
+        </div>
+
+        <div class="bar-group">
+          <div class="bar-label">
+            <span>Health</span>
+            <span id="health-text">—</span>
+          </div>
+          <div class="bar-track" id="playerHealthBar">
+            <div class="bar-fill bar-health" id="playerHealthBarInner"></div>
+            <div class="bar-regen-sub" id="playerRegenSubBar"></div>
+          </div>
+        </div>
+
+        <div id="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">Attack</span>
+            <span class="stat-value" id="stat-attack">—</span>
+            <span class="stat-potential" id="pot-attack">/ —</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Defence</span>
+            <span class="stat-value" id="stat-defence">—</span>
+            <span class="stat-potential" id="pot-defence">/ —</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Atk speed</span>
+            <span class="stat-value" id="stat-speed">—</span>
+            <span class="stat-potential" id="pot-speed">/ —</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">HP regen</span>
+            <span class="stat-value" id="stat-regen">—</span>
+            <span class="stat-potential" id="pot-regen">/ —</span>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+    <!-- Fight section -->
+    <section id="fight-section">
+      <div id="fightDiv" class="hidden">
+        <button id="attack-btn">Hunt</button>
+        <div class="combatant" id="player-combat">
+          <div class="combatant-name" id="player-combat-name">—</div>
+          <div class="bar-group">
+            <div class="bar-label"><span>HP</span></div>
+            <div class="bar-track">
+              <div class="bar-fill bar-health" id="playerHealthBarCombat"></div>
             </div>
-            <div id="playerAttackProgressBar" class="attackBarBackground fight-bar-sizing">
-                <div id="playerAttackProgressBarInner"  class="attackProgress progress-bar fight-bar-sizing"></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Attack</span></div>
+            <div class="bar-track">
+              <div class="bar-fill bar-attack" id="playerAttackProgressBarInner"></div>
             </div>
-            
-        </span>
-        <span id="enemy-div">
-            <h2 id="enemy-name">Enemy 1</h2>
-            <div id="enemyHealthBar" class="healthBarBackground fight-bar-sizing">
-                <div id="enemyHealthBarInner" class="health progress-bar fight-bar-sizing"></div>
+          </div>
+        </div>
+
+        <div id="vs-divider">VS</div>
+
+        <div class="combatant" id="enemy-combat">
+          <div class="combatant-name" id="enemy-name">—</div>
+          <div class="bar-group">
+            <div class="bar-label"><span>HP</span></div>
+            <div class="bar-track">
+              <div class="bar-fill bar-health" id="enemyHealthBarInner"></div>
             </div>
-            <div id="enemyAttackProgressBar" class="attackBarBackground fight-bar-sizing">
-                <div id="enemyAttackProgressBarInner" class="attackProgress progress-bar fight-bar-sizing"></div>
-            </div>    
-        </span>
-    <script src="script/script.js"></script>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Attack</span></div>
+            <div class="bar-track">
+              <div class="bar-fill bar-attack" id="enemyAttackProgressBarInner"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script/script.js"></script>
 </body>
 </html>
