@@ -1,4 +1,4 @@
-function toggleVisilibity(divName){
+function toggleVisibility(divName){
   let section = document.getElementById(divName);
   if(section != null){
     if(section.classList.contains("hidden")){
@@ -54,7 +54,7 @@ let enemies;
 // Fractional regen accumulator for the sub-bar
 let regenAccumulator = 0;
 
-function updateHealth(entity, healthBar, healthSpan, mirrorBar){
+function updateHealth(entity, healthBar, mirrorBar){
   let health_ratio = (entity.health / entity.maxHealth) * 100;
   let text = Math.floor(entity.health) + " / " + Math.floor(entity.maxHealth);
   healthBar.style.width = health_ratio + "%";
